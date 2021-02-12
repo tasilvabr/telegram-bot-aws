@@ -37,7 +37,6 @@ def lambda_handler(event, context):
         exit="tenha uma boa noite!"
         
     message=json.loads(event['body'])
-    #message=event
     from_user=dict(message['message']['from'])
     from_user_id=str(from_user['id'])
     try:
@@ -76,10 +75,6 @@ def lambda_handler(event, context):
         
         date_time = datetime.today() - timedelta(hours=int(SESSION_TIMEOUT))
         response = session_exists(from_user_id, date_time)
-        #print(response)
-        #return {
-        #    "statusCode":400
-        #}
         new_session = False
         if len(response['Item'])==0:
             try:
@@ -518,9 +513,6 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
         url = URL + "sendMessage?text={}&chat_id={}".format(final_text,chat_id)
         requests.get(url)
             
-        #ec2 = boto3.resource('ec2')
-        #snapshot = ec2.Snapshot(snap['SnapshotId'])
-
         buttons={}
         buttons['keyboard']=[[]]
         array = 0

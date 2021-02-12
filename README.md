@@ -104,6 +104,21 @@ Feito isto coloque o nome ***request-telegram-session***, coloque como Partition
 ![Image10](https://i.imgur.com/zIT33uj.png)
 ![Image10a](https://i.imgur.com/HpzK9S2.png)
 
+Feito isto agora vamos clicar na tabela ***request-telegram-session*** cadastrar o index.
+
+```
+AWS Management Console > DynamoDB > Tables > request-telegram-session
+```
+
+Agora dentro da tabela vamos clicar em **Indexes** e Create index:
+![Image10b](https://i.imgur.com/S672GKZ.png)
+
+Dentro do Create index vamos configurar conforme abaixo e clicar no botão Create index:
+
+![Image10c](https://i.imgur.com/P1dhz7T.png)
+![Image10d](https://i.imgur.com/Ux0i9C8.png)
+
+
 Agora vamos criar a função Lambda que será a nossa aplicação:
 ```
 AWS Management Console > Lambda > Functions > Create function

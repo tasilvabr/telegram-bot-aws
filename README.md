@@ -118,7 +118,7 @@ Agora dentro da sua função Lambda desça até a parte de "Environment variable
 
 Então clique em "Add environment variable" 6 vezes para adicionar 6 variaveis de ambiente.
 As váriaveis que iremos criar são INFRA_GROUP_ID, REGION_DB, SESSION_TABLE, TOKEN, USER_TABLE e SESSION_TIMEOUT_HOUR que são os valores que coletamos anteriormente, o token do BOT e o ID do grupo e os nomes das tabelas criadas anteriormente, criadas as váriaveis clique para salvar.
-![Image13](https://i.imgur.com/G6e86ql.png)
+![Image13](https://i.imgur.com/oBfMpeP.png)
 
 Agora subindo novamente no item **Function code** dê dois clique no arquivo *lambda_function.py* e substitua o conteúdo na janela à esquerda pelo código disponibilizado no arquivo lambda.py, feito isto clique em Deploy.
 ![Image14](https://i.imgur.com/jdllKki.png)

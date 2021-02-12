@@ -9,7 +9,7 @@ from botocore.vendored import requests
 TOKEN = os.environ['TOKEN']
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 INFRA_GROUP = str(os.environ['INFRA_GROUP_ID'])
-SESSION_TIMEOUT = os.environ['SESSION_TIMEOUT_HOUR']
+SESSION_TIMEOUT = os.environ['SESSION_TIMEOUT_MINUTES']
 USER_TABLE = os.environ['USER_TABLE']
 SESSION_TABLE = os.environ['SESSION_TABLE']
 REGION_DB = os.environ['REGION_DB']
@@ -72,13 +72,17 @@ def lambda_handler(event, context):
             permitted=1
     
     if (permitted==1):
-        
-        date_time = datetime.today() - timedelta(hours=int(SESSION_TIMEOUT))
+        date_hour = datetime.now()
+        date_time = datetime.today() - timedelta(minutes=int(SESSION_TIMEOUT))
         response = session_exists(from_user_id, date_time)
         new_session = False
         if len(response['Item'])==0:
             try:
-                commands=reply.strip()
+                if (reply.strip()!="/start"):
+                    final_text='Sessão Expirada!\n\n'
+                    url = URL + "sendMessage?text={}&chat_id={}".format(final_text,from_user_id)
+                    requests.get(url)
+                commands="/start"
                 session_id = from_user_id + date_hour.strftime('%y%m%d%H%M%S%f')
                 response = session_create(from_user_id, session_id, date_hour, commands)
                 new_session = True
@@ -759,13 +763,13 @@ def user_allowed():
 
 def session_exists(user_id, date_time):
     dynamodb = boto3.client('dynamodb')
-    session_verify=str(date_time.strftime('%y%m%d%H%M%S'))
     response = dynamodb.query(
         TableName=SESSION_TABLE,
-        KeyConditionExpression='user_id = :userId AND session_id > :sessionId ',
+        IndexName= "dateHour",
+        KeyConditionExpression='user_id = :userId AND date_hour > :dateHourVerify ',
         ExpressionAttributeValues={
             ':userId': {'S': str(user_id)},
-            ':sessionId': {'S': str(session_verify)}
+            ':dateHourVerify': {'S': str(date_time)}
         }
     )
 

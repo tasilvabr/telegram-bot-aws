@@ -124,10 +124,12 @@ def lambda_handler(event, context):
                         else:
                             commands += ',' + com
                 
+                date_hour = datetime.now()
                 response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
             
             if (reply.strip().lower() == 'sair' and not new_session):
                 commands += ','+reply.strip()
+                date_hour = datetime.now()
                 response = session_update(chat_id, session_id, date_hour, commands, 'encerrada')
                 buttons={}
                 buttons['remove_keyboard']=True
@@ -152,6 +154,7 @@ def lambda_handler(event, context):
             else:
                 if (reply.strip().upper() in SERVICES or reply.strip() in SERVICES):
                     commands += ','+reply.strip()
+                    date_hour = datetime.now()
                     response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                     send_message(reply, chat_id, previous_command)
                 
@@ -274,6 +277,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
             if instance.tags[0]['Value']==action[1]:
                 command = previous + '|' + text
                 commands += ','+command
+                date_hour = datetime.now()
                 response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                 state=int(instance.state['Code'])
                 if state==0:
@@ -340,6 +344,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
                 if action[2]=='Ligar':
                     command = previous + '|' + text
                     commands  += ','+command
+                    date_hour = datetime.now()
                     response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                     
                     ec2 = boto3.client('ec2', region_name=region_es2)
@@ -369,6 +374,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
                 if action[2]=='Desligar':
                     command = previous + '|' + text
                     commands  += ','+command
+                    date_hour = datetime.now()
                     response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                     
                     ec2 = boto3.client('ec2', region_name=region_es2)
@@ -398,6 +404,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
                 if action[2]=='Descrição':
                     command = previous + '|' + text
                     commands  += ','+command
+                    date_hour = datetime.now()
                     response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                     
                     ec2 = boto3.client('ec2', region_name=region_es2)
@@ -492,6 +499,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
         
                     reply_kb_markup = json.dumps(buttons, indent = 4)
                     
+                    date_hour = datetime.now()
                     response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                     
                     final_text="{} criado com sucesso!".format(str(description))
@@ -522,6 +530,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
         array = 0
         command = previous + '|' + text
         commands += ','+command
+        date_hour = datetime.now()
         response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
 
         buttons['keyboard'][array].append({'text':'Excluir'})   
@@ -562,6 +571,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
             array = 0
             command = previous + '|' + text
             commands += ','+command
+            date_hour = datetime.now()
             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
     
             buttons['keyboard'][array].append({'text':'Sim'})   
@@ -610,6 +620,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
                 array = 0
                 command = previous + '|' + text
                 commands += ','+command
+                date_hour = datetime.now()
                 response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
         
                 buttons['keyboard'][array].append({'text':'Voltar'})
@@ -634,6 +645,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
                 array = 0
                 command = previous + '|' + text
                 commands += ','+command
+                date_hour = datetime.now()
                 response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
         
                 buttons['keyboard'][array].append({'text':'Voltar'})
@@ -983,6 +995,7 @@ def users(command, previous, chat_id, job, commands, session_id):
         url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id,reply_kb_markup)
         requests.get(url)
         
+        date_hour = datetime.now()
         response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
     
     elif (len(action)==2) and action[0].lower() == 'usuários' and action[1].lower()=='liberar':
@@ -1022,6 +1035,7 @@ def users(command, previous, chat_id, job, commands, session_id):
         url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id,reply_kb_markup)
         requests.get(url)
         
+        date_hour = datetime.now()
         response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
         
     elif (len(action)==3  and action[0].lower() == 'usuários' and action[1].lower()=='liberar'):
@@ -1049,6 +1063,7 @@ def users(command, previous, chat_id, job, commands, session_id):
             url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id,reply_kb_markup)
             requests.get(url)
             
+            date_hour = datetime.now()
             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
         else:
             buttons={}
@@ -1110,6 +1125,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                             final_text="Digite '/start' para iniciar o bot"
                             url = URL + "sendMessage?text={}&chat_id={}".format(final_text,user['user_id']['S'])
                             requests.get(url)
+                            date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário liberado com sucesso"
                             url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)
@@ -1162,6 +1178,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                         user = response['Item']
                         try:
                             user_delete(user)
+                            date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário excluído com sucesso"
                             url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)
@@ -1302,6 +1319,7 @@ def users(command, previous, chat_id, job, commands, session_id):
         url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id,reply_kb_markup)
         requests.get(url)
         
+        date_hour = datetime.now()
         response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
         
     elif (len(action)==3  and action[0].lower() == 'usuários' and action[1].lower()=='bloquear'):
@@ -1329,6 +1347,7 @@ def users(command, previous, chat_id, job, commands, session_id):
             url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id,reply_kb_markup)
             requests.get(url)
             
+            date_hour = datetime.now()
             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
         else:
             buttons={}
@@ -1381,6 +1400,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                         user = response['Item']
                         try:
                             deny_user(user)
+                            date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário bloqueado com sucesso"
                             url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)
@@ -1433,6 +1453,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                         user = response['Item']
                         try:
                             user_delete(user)
+                            date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário excluído com sucesso"
                             url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)

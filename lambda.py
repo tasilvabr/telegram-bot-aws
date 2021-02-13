@@ -473,6 +473,7 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
 
                     instanceSnapshot = boto3.client('ec2', region_name=region_es2)
                     
+                    date_hour = datetime.now()
                     description = 'Snapshot Bot EC2 ' + action[1] + ' ' + date_hour.strftime('%y-%m-%d %H:%S')
 
                     response = instanceSnapshot.create_snapshots(

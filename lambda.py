@@ -37,6 +37,7 @@ def lambda_handler(event, context):
         exit="tenha uma boa noite!"
         
     message=json.loads(event['body'])
+    #message=event
     from_user=dict(message['message']['from'])
     from_user_id=str(from_user['id'])
     try:
@@ -748,7 +749,6 @@ def user_delete(user):
             'user_id': str(user['user_id']['S'])
         }
         )
-    print(response)
 
 def user_denied():
     dynamodb = boto3.client('dynamodb')
@@ -966,8 +966,7 @@ def users(command, previous, chat_id, job, commands, session_id):
         action = previous + '|' + command
 
     commands  += ','+action
-    print(action)
-    
+
     action = action.split('|')
     
     if (len(action)==1):
@@ -1129,7 +1128,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                             date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário liberado com sucesso"
-                            url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)
+                            url = URL + "sendMessage?text={}&chat_id={}".format(final_text,chat_id)
                             requests.get(url)
                             menu_principal(chat_id, job)
                         except:
@@ -1182,7 +1181,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                             date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário excluído com sucesso"
-                            url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)
+                            url = URL + "sendMessage?text={}&chat_id={}".format(final_text,chat_id)
                             requests.get(url)
                             menu_principal(chat_id, job)
                         except:
@@ -1404,7 +1403,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                             date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário bloqueado com sucesso"
-                            url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)
+                            url = URL + "sendMessage?text={}&chat_id={}".format(final_text,chat_id)
                             requests.get(url)
                             menu_principal(chat_id, job)
                         except:
@@ -1457,7 +1456,7 @@ def users(command, previous, chat_id, job, commands, session_id):
                             date_hour = datetime.now()
                             response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
                             final_text="Usuário excluído com sucesso"
-                            url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id)
+                            url = URL + "sendMessage?text={}&chat_id={}".format(final_text,chat_id)
                             requests.get(url)
                             menu_principal(chat_id, job)
                         except:

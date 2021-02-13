@@ -1,0 +1,13 @@
+{
+  "message": {
+    "chat": {
+      "id": "<ID do Usuário>"
+    },
+    "text": "/start",
+    "from": {
+      "id": "509279336",
+      "first_name": "<Nome>",
+      "last_name": "<Sobrenome>"
+    }
+  }
+}

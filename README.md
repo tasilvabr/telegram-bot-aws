@@ -1,6 +1,7 @@
 # Controlar seus serviços AWS com o Telegram
 
 Este script é para ser utilizado com os serviços da AWS:
+  - CloudWatch
   - Funções do IAM
   - DynamoDB
   - Lambda
@@ -36,7 +37,18 @@ Para configurar um tópico SNS e também criar uma função Lambda que o recebim
 https://gitlab.com/comunidade-cloud/aws/notificacoes-via-telegram.git
 ```
 
-Seguindo então o repositório acima já criei o ***TelegramSNSNotifier***
+Seguindo então o repositório acima já criamos o ***TelegramSNSNotifier*** e colocamos as variáveis de ambiente TOKEN e USER_ID (Grupo de Infraestrutura por exemplo) do Bot e Grupo que criamos anteriormente.
+
+Agora vamos criar uma regra de evento do CloudWatch para podermos receber os eventos de mudança de status das EC2
+```
+AWS Management Console > CloudWatch > Events > Rules > Create rule
+```
+
+Conforme abaixo configure a rule que está sendo criada colocando como destino o tópico SNS criado anteriormente clicando no botão Add target* e depois clique no botão Configure details para prosseguir
+![Image3c](https://i.imgur.com/an7ysGJ.png)
+
+Coloque o nome ***EC2_Change_State*** para concluirmos o restante das configurações conforme abaixo e clique em Create rule
+![Image4c](https://i.imgur.com/quC3eTf.png)
 
 Agora vamos para o console da AWS e vamos criar as funções no IAM que vamos precisar que o Lambda tenha para acessar os outros serviços da AWS: 
 ```

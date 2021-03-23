@@ -300,6 +300,9 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
                     
                 elif state==16 or state==0:
                     buttons['keyboard'][array].append({'text':'{}'.format('Desligar')})
+                    buttons['keyboard'].append([])   
+                    array+=1
+                    buttons['keyboard'][array].append({'text':'Reiniciar'})
                     anyEC2=True
         
         buttons['keyboard'].append([])   
@@ -401,6 +404,36 @@ def send_message_action(text, chat_id, action, commands, previous, session_id, j
                     final_text="Sua instância foi desligada com sucesso!"
                     url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id,reply_kb_markup)
                     requests.get(url) 
+                
+                if action[2]=='Reiniciar':
+                    command = previous + '|' + text
+                    commands  += ','+command
+                    date_hour = datetime.now()
+                    response = session_update(chat_id, session_id, date_hour, commands, 'aberta')
+                    
+                    ec2 = boto3.client('ec2', region_name=region_es2)
+                    instancias=[]
+                    instancias.append(instance.id)
+                    ec2.reboot_instances(InstanceIds=instancias)
+                     
+                    buttons={}
+                    buttons['keyboard']=[[]]
+                    array = 0
+                    buttons['keyboard'][array].append({'text':'Voltar'})     
+                    
+                    buttons['keyboard'].append([])
+                    array+=1
+                    buttons['keyboard'][array].append({'text':'Sair'})
+            
+                    buttons['resize_keyboard']=True
+                    buttons['one_time_keyboard']=True
+                    buttons['selective']=True
+        
+                    reply_kb_markup = json.dumps(buttons, indent = 4)
+                    
+                    final_text="Sua instância foi reiniciada com sucesso!"
+                    url = URL + "sendMessage?text={}&chat_id={}&reply_markup={}".format(final_text,chat_id,reply_kb_markup)
+                    requests.get(url)
                 
                 if action[2]=='Descrição':
                     command = previous + '|' + text

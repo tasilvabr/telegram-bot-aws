@@ -207,7 +207,7 @@ def send_message(text, chat_id, previous):
                     buttons['keyboard'].append([])
                     cont=1
                     array+=1
-                    buttons['keyboard'][array].append({'text':'{}'.format(instance.tags[0]['Value'],condition)})
+                    buttons['keyboard'][array].append({'text':'{} - {}'.format(instance.tags[0]['Value'],condition)})
                     cont+=1
         
         buttons['keyboard'].append([])   
